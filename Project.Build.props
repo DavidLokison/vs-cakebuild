@@ -4,22 +4,13 @@
   </PropertyGroup>
 
   <Target Name="CakeBuild">
-    <Exec Command="dotnet run --project build -- --project $(AssemblyName) --configuration $(Configuration)"/>
+    <Exec Command="build/bin/CakeBuild --project $(AssemblyName) --configuration $(Configuration)"/>
   </Target>
   <Target Name="RunClient" DependsOnTargets="CakeBuild">
     <Exec Command="dotnet $(VintageStory)/Vintagestory.dll -- --tracelog --addModPath '$(ProjectDir)/dist/$(Configuration)'"/>
   </Target>
   <Target Name="RunServer" DependsOnTargets="CakeBuild">
     <Exec Command="dotnet $(VintageStory)/VintagestoryServer.dll -- --tracelog --addModPath '$(ProjectDir)/dist/$(Configuration)'"/>
-  </Target>
-
-  <Target Name="RemoveSymbolsFromPublish" AfterTargets="ComputeFilesToPublish">
-    <ItemGroup Condition="'$(Configuration)' == 'Release'">
-      <ResolvedFileToPublish Remove="@(ResolvedFileToPublish)"
-        Condition="'%(ResolvedFileToPublish.Extension)' == '.pdb'" />
-      <ResolvedFileToPublish Remove="@(ResolvedFileToPublish)"
-        Condition="$([System.String]::Copy('%(ResolvedFileToPublish.Identity)').EndsWith('.deps.json'))" />
-    </ItemGroup>
   </Target>
 
   <ItemGroup>

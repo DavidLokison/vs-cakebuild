@@ -1,7 +1,10 @@
 <Project Sdk="Microsoft.NET.Sdk">
   <PropertyGroup>
     <OutputType>Exe</OutputType>
+    <OutputPath>bin</OutputPath>
     <RunWorkingDirectory>$(MSBuildProjectDirectory)/..</RunWorkingDirectory>
+    <PublishSingleFile>true</PublishSingleFile>
+    <PublishDir>../bin</PublishDir>
   </PropertyGroup>
   
   <ItemGroup>
