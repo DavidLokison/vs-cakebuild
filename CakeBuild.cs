@@ -32,14 +32,21 @@ public class BuildContext : FrostingContext
     public BuildContext(ICakeContext context)
         : base(context)
     {
-        var projectFiles = context.GetFiles("*.csproj");
-        if (projectFiles.Count > 1)
+        if (context.HasArgument("project"))
         {
-            throw new Exception("Found more than one .csproj file. Automatic project selection failed.");
+            ProjectName = context.Argument<string>("project");
         }
-        foreach (var file in projectFiles)
+        else
         {
-            ProjectName = file.GetFilenameWithoutExtension().ToString();
+            var projectFiles = context.GetFiles("*.csproj");
+            if (projectFiles.Count > 1)
+            {
+                throw new Exception("Found more than one .csproj file. Automatic project selection failed.");
+            }
+            foreach (var file in projectFiles)
+            {
+                ProjectName = file.GetFilenameWithoutExtension().ToString();
+            }
         }
         BuildConfiguration = context.Argument("configuration", "Release");
         SkipJsonValidation = context.Argument("skipJsonValidation", false);
