@@ -1,0 +1,67 @@
+<Project>
+  <PropertyGroup>
+    <DefaultItemExcludes>build//**;dist//**</DefaultItemExcludes>
+  </PropertyGroup>
+
+  <Target Name="CakeBuild">
+    <Exec Command="dotnet run --project build -- --project $(AssemblyName) --configuration $(Configuration)"/>
+  </Target>
+  <Target Name="RunClient" DependsOnTargets="CakeBuild">
+    <Exec Command="dotnet $(VintageStory)/Vintagestory.dll -- --tracelog --addModPath '$(ProjectDir)/dist/$(Configuration)'"/>
+  </Target>
+  <Target Name="RunServer" DependsOnTargets="CakeBuild">
+    <Exec Command="dotnet $(VintageStory)/VintagestoryServer.dll -- --tracelog --addModPath '$(ProjectDir)/dist/$(Configuration)'"/>
+  </Target>
+
+  <Target Name="RemoveSymbolsFromPublish" AfterTargets="ComputeFilesToPublish">
+    <ItemGroup Condition="'$(Configuration)' == 'Release'">
+      <ResolvedFileToPublish Remove="@(ResolvedFileToPublish)"
+        Condition="'%(ResolvedFileToPublish.Extension)' == '.pdb'" />
+      <ResolvedFileToPublish Remove="@(ResolvedFileToPublish)"
+        Condition="$([System.String]::Copy('%(ResolvedFileToPublish.Identity)').EndsWith('.deps.json'))" />
+    </ItemGroup>
+  </Target>
+
+  <ItemGroup>
+    <Reference Include="VintagestoryAPI">
+      <HintPath>$(VintageStory)/VintagestoryAPI.dll</HintPath>
+      <Private>False</Private>
+    </Reference>
+    <Reference Include="VSSurvivalMod">
+      <HintPath>$(VintageStory)/Mods/VSSurvivalMod.dll</HintPath>
+      <Private>False</Private>
+    </Reference>
+    <Reference Include="VSEssentials">
+      <HintPath>$(VintageStory)/Mods/VSEssentials.dll</HintPath>
+      <Private>False</Private>
+    </Reference>
+    <Reference Include="VSCreativeMod">
+      <HintPath>$(VintageStory)/Mods/VSCreativeMod.dll</HintPath>
+      <Private>False</Private>
+    </Reference>
+    <Reference Include="Newtonsoft.Json">
+      <HintPath>$(VintageStory)/Lib/Newtonsoft.Json.dll</HintPath>
+      <Private>False</Private>
+    </Reference>
+    <Reference Include="0Harmony">
+      <HintPath>$(VintageStory)/Lib/0Harmony.dll</HintPath>
+      <Private>False</Private>
+    </Reference>
+    <Reference Include="VintagestoryLib">
+      <HintPath>$(VintageStory)/VintagestoryLib.dll</HintPath>
+      <Private>False</Private>
+    </Reference>
+    <Reference Include="protobuf-net">
+      <HintPath>$(VintageStory)/Lib/protobuf-net.dll</HintPath>
+      <Private>False</Private>
+    </Reference>
+    <Reference Include="cairo-sharp">
+      <HintPath>$(VintageStory)/Lib/cairo-sharp.dll</HintPath>
+      <Private>False</Private>
+    </Reference>
+    <Reference Include="Microsoft.Data.Sqlite">
+      <HintPath>$(VintageStory)/Lib/Microsoft.Data.Sqlite.dll</HintPath>
+      <Private>False</Private>
+    </Reference>
+  </ItemGroup>
+</Project>
