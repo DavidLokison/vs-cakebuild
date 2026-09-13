@@ -2,11 +2,15 @@
   <PropertyGroup>
     <OutputType>Exe</OutputType>
     <OutputPath>bin</OutputPath>
+    <Optimize>false</Optimize>
     <RunWorkingDirectory>$(MSBuildProjectDirectory)/..</RunWorkingDirectory>
     <PublishSingleFile>true</PublishSingleFile>
+    <PublishSelfContained>true</PublishSelfContained>
+    <PublishDocumentationFiles>false</PublishDocumentationFiles>
+    <PublishReferencesSymbols>false</PublishReferencesSymbols>
     <PublishDir>../bin</PublishDir>
   </PropertyGroup>
-  
+
   <ItemGroup>
     <PackageReference Include="Cake.Frosting" Version="6.1.0" />
     <PackageReference Include="Cake.Json" Version="7.0.1" />
