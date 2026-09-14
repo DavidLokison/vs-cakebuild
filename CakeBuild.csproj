@@ -3,10 +3,12 @@
     <OutputType>Exe</OutputType>
     <OutputPath>bin</OutputPath>
     <Optimize>false</Optimize>
+    <DebugType>none</DebugType>
     <RunWorkingDirectory>$(MSBuildProjectDirectory)/..</RunWorkingDirectory>
     <PublishSingleFile>true</PublishSingleFile>
     <PublishSelfContained>true</PublishSelfContained>
     <PublishDocumentationFiles>false</PublishDocumentationFiles>
+    <PublishReferencesDocumentationFiles>false</PublishReferencesDocumentationFiles>
     <PublishReferencesSymbols>false</PublishReferencesSymbols>
     <PublishDir>../bin</PublishDir>
   </PropertyGroup>
@@ -16,7 +18,7 @@
     <PackageReference Include="Cake.Json" Version="7.0.1" />
     <PackageReference Include="Newtonsoft.Json" Version="13.0.4" />
     <Reference Include="VintagestoryAPI">
-      <HintPath>$(VintageStory)/VintagestoryAPI.dll</HintPath>
+      <HintPath>$(VintageStoryPath)/VintagestoryAPI.dll</HintPath>
     </Reference>
   </ItemGroup>
 </Project>

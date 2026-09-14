@@ -1,5 +1,6 @@
 <Project>
   <PropertyGroup>
+    <GenerateAssemblyInfo>false</GenerateAssemblyInfo>
     <DefaultItemExcludes>build//**;dist//**</DefaultItemExcludes>
   </PropertyGroup>
 
@@ -7,51 +8,51 @@
     <Exec Command="bin/CakeBuild --project $(AssemblyName) --configuration $(Configuration)"/>
   </Target>
   <Target Name="RunClient" DependsOnTargets="CakeBuild">
-    <Exec Command="dotnet $(VintageStory)/Vintagestory.dll -- --tracelog --addModPath '$(ProjectDir)/dist/$(Configuration)'"/>
+    <Exec Command="dotnet $(VintageStoryPath)/Vintagestory.dll -- --tracelog --addModPath '$(ProjectDir)/dist/$(Configuration)'"/>
   </Target>
   <Target Name="RunServer" DependsOnTargets="CakeBuild">
-    <Exec Command="dotnet $(VintageStory)/VintagestoryServer.dll -- --tracelog --addModPath '$(ProjectDir)/dist/$(Configuration)'"/>
+    <Exec Command="dotnet $(VintageStoryPath)/VintagestoryServer.dll -- --tracelog --addModPath '$(ProjectDir)/dist/$(Configuration)'"/>
   </Target>
 
   <ItemGroup>
     <Reference Include="VintagestoryAPI">
-      <HintPath>$(VintageStory)/VintagestoryAPI.dll</HintPath>
+      <HintPath>$(VintageStoryPath)/VintagestoryAPI.dll</HintPath>
       <Private>False</Private>
     </Reference>
     <Reference Include="VSSurvivalMod">
-      <HintPath>$(VintageStory)/Mods/VSSurvivalMod.dll</HintPath>
+      <HintPath>$(VintageStoryPath)/Mods/VSSurvivalMod.dll</HintPath>
       <Private>False</Private>
     </Reference>
     <Reference Include="VSEssentials">
-      <HintPath>$(VintageStory)/Mods/VSEssentials.dll</HintPath>
+      <HintPath>$(VintageStoryPath)/Mods/VSEssentials.dll</HintPath>
       <Private>False</Private>
     </Reference>
     <Reference Include="VSCreativeMod">
-      <HintPath>$(VintageStory)/Mods/VSCreativeMod.dll</HintPath>
+      <HintPath>$(VintageStoryPath)/Mods/VSCreativeMod.dll</HintPath>
       <Private>False</Private>
     </Reference>
     <Reference Include="Newtonsoft.Json">
-      <HintPath>$(VintageStory)/Lib/Newtonsoft.Json.dll</HintPath>
+      <HintPath>$(VintageStoryPath)/Lib/Newtonsoft.Json.dll</HintPath>
       <Private>False</Private>
     </Reference>
     <Reference Include="0Harmony">
-      <HintPath>$(VintageStory)/Lib/0Harmony.dll</HintPath>
+      <HintPath>$(VintageStoryPath)/Lib/0Harmony.dll</HintPath>
       <Private>False</Private>
     </Reference>
     <Reference Include="VintagestoryLib">
-      <HintPath>$(VintageStory)/VintagestoryLib.dll</HintPath>
+      <HintPath>$(VintageStoryPath)/VintagestoryLib.dll</HintPath>
       <Private>False</Private>
     </Reference>
     <Reference Include="protobuf-net">
-      <HintPath>$(VintageStory)/Lib/protobuf-net.dll</HintPath>
+      <HintPath>$(VintageStoryPath)/Lib/protobuf-net.dll</HintPath>
       <Private>False</Private>
     </Reference>
     <Reference Include="cairo-sharp">
-      <HintPath>$(VintageStory)/Lib/cairo-sharp.dll</HintPath>
+      <HintPath>$(VintageStoryPath)/Lib/cairo-sharp.dll</HintPath>
       <Private>False</Private>
     </Reference>
     <Reference Include="Microsoft.Data.Sqlite">
-      <HintPath>$(VintageStory)/Lib/Microsoft.Data.Sqlite.dll</HintPath>
+      <HintPath>$(VintageStoryPath)/Lib/Microsoft.Data.Sqlite.dll</HintPath>
       <Private>False</Private>
     </Reference>
   </ItemGroup>

@@ -1,5 +1,7 @@
 using System;
+using System.Collections.Generic;
 using System.IO;
+using System.Reflection;
 using Cake.Common;
 using Cake.Common.IO;
 using Cake.Common.Tools.DotNet;
@@ -25,7 +27,6 @@ public static class Program
 public class BuildContext : FrostingContext
 {
     public string ProjectName { get; }
-    public ModInfo ModInfo { get; }
     public string BuildConfiguration { get; set; }
     public bool SkipJsonValidation { get; set; }
 
@@ -50,7 +51,6 @@ public class BuildContext : FrostingContext
         }
         BuildConfiguration = context.Argument("configuration", "Release");
         SkipJsonValidation = context.Argument("skipJsonValidation", false);
-        ModInfo = context.DeserializeJsonFromFile<ModInfo>($"modinfo.json");
     }
 }
 
@@ -107,10 +107,40 @@ public sealed class PackageTask : FrostingTask<BuildContext>
     {
         context.EnsureDirectoryExists($"dist/{context.BuildConfiguration}");
         context.CleanDirectory($"dist/{context.BuildConfiguration}");
-        context.CopyDirectory($"bin/{context.BuildConfiguration}/publish", $"dist/{context.BuildConfiguration}/{context.ModInfo.ModID}");
-        if (context.BuildConfiguration == "Release")
+        Assembly mod = Assembly.LoadFrom($"bin/{context.BuildConfiguration}/{context.ProjectName}.dll");
+        ModInfoAttribute modInfoAttr = mod.GetCustomAttribute<ModInfoAttribute>();
+        List<ModDependency> dependencies = new List<ModDependency>();
+        foreach (ModDependencyAttribute depsAttr in mod.GetCustomAttributes<ModDependencyAttribute>())
         {
-            context.Zip($"bin/{context.BuildConfiguration}/publish", $"dist/{context.ModInfo.ModID}_{context.ModInfo.Version}.zip");
+            dependencies.Add(new ModDependency(depsAttr.ModID, depsAttr.Version));
+        }
+        ModInfo modInfo = new ModInfo(
+                EnumModType.Code,
+                modInfoAttr.Name,
+                modInfoAttr.ModID,
+                modInfoAttr.Version,
+                modInfoAttr.Description,
+                modInfoAttr.Authors,
+                modInfoAttr.Contributors,
+                modInfoAttr.Website,
+                Enum.Parse<EnumAppSide>(modInfoAttr.Side),
+                modInfoAttr.RequiredOnClient,
+                modInfoAttr.RequiredOnServer,
+                dependencies
+                ) {
+            NetworkVersion = modInfoAttr.NetworkVersion,
+            IconPath = modInfoAttr.IconPath,
+        };
+        context.CopyDirectory($"bin/{context.BuildConfiguration}/publish", $"dist/{context.BuildConfiguration}/{modInfo.ModID}");
+        context.SerializeJsonToPrettyFile<ModInfo>($"dist/{context.BuildConfiguration}/{modInfo.ModID}/modinfo.json", modInfo);
+        if (modInfoAttr.WorldConfig != null)
+        {
+            ModWorldConfiguration modWorldConfig = context.DeserializeJson<ModWorldConfiguration>(modInfoAttr.WorldConfig);
+            context.SerializeJsonToPrettyFile<ModWorldConfiguration>($"dist/{context.BuildConfiguration}/{modInfo.ModID}/worldconfig.json", modWorldConfig);
+        }
+        if (context.DirectoryExists("assets"))
+        {
+            context.CopyDirectory($"assets", $"dist/{context.BuildConfiguration}/{modInfo.ModID}/assets");
         }
     }
 }
