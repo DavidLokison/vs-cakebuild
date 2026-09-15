@@ -1,5 +1,7 @@
 <Project Sdk="Microsoft.NET.Sdk">
   <PropertyGroup>
+    <TargetFramework>$(FrameworkVersion)</TargetFramework>
+    <TargetVintageStory>server:$(VintageStoryVersion)</TargetVintageStory>
     <OutputType>Exe</OutputType>
     <OutputPath>bin</OutputPath>
     <Optimize>false</Optimize>
